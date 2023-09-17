@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -107,15 +107,23 @@
                 </article>
 
                 <article>
-                    <h1>Chart</h1>
+                    <h1>Pie Chart</h1>
+                    <p>
+                        <canvas id="pieChart" width="400" height="400"></canvas>
+                    </p>
+                </article>
+
+                <!-- <article>
+                    <h1>Donut Chart</h1>
                     <p>
                         <canvas
-                            id="budgetChart"
+                            id="donutChart"
                             width="400"
                             height="400"
                         ></canvas>
                     </p>
-                </article>
+                </article> -->
+                <article id="d3Chart"></article>
             </div>
         </main>
 
@@ -158,26 +166,20 @@
                         dataSource.datasets[0].data[i] =
                             res.data.myBudget[i].budget;
                         dataSource.labels[i] = res.data.myBudget[i].title;
-                        createChart();
                     }
+                    createChart();
                 });
             }
 
-            let pieChart;
-
             function createChart() {
-                if (pieChart !== undefined) {
-                    pieChart.destroy();
-                }
-
-                const chartElement = document.querySelector("#budgetChart");
+                const chartElement = document.querySelector("#pieChart");
                 if (chartElement === null) {
-                    console.log("budgetChart canvas not found");
+                    console.log("pieChart canvas not found");
                     return;
                 }
 
                 const ctx = chartElement.getContext("2d");
-                pieChart = new Chart(ctx, {
+                const pieChart = new Chart(ctx, {
                     type: "pie",
                     data: dataSource,
                 });
