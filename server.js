@@ -1,15 +1,8 @@
 import express from "express";
+import { readFile } from "node:fs";
 
 const port = 3000;
 const app = express();
-
-const budget = {
-    myBudget: [
-        { title: "Eat out", budget: 30 },
-        { title: "Rent", budget: 350 },
-        { title: "Groceries", budget: 90 },
-    ],
-};
 
 function main() {
     app.use("/", express.static("public"));
@@ -18,7 +11,16 @@ function main() {
         res.send("Hello, world!");
     });
     app.get("/budget", (_req, res) => {
-        res.json(budget);
+        readFile("budget.json", "utf8", (err, data) => {
+            if (err !== null) {
+                console.error(`Error reading JSON file: ${err}`);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            const budget = JSON.parse(data);
+            res.json(budget);
+        });
     });
 
     app.listen(port, () => {
