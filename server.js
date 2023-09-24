@@ -1,10 +1,13 @@
 import express from "express";
 import { readFile } from "node:fs";
+import cors from "cors";
 
 const port = 3000;
 const app = express();
 
 function main() {
+    app.use(cors());
+
     app.use("/", express.static("public"));
 
     app.get("/hello", (_req, res) => {
